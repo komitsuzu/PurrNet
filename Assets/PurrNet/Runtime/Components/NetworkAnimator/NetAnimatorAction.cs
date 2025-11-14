@@ -921,7 +921,7 @@ namespace PurrNet
             {
                 case NetAnimatorAction.SetBool: _bool.Apply(anim); break;
                 case NetAnimatorAction.SetFloat: _float.Apply(anim); break;
-                case NetAnimatorAction.SetFloatDampTime: _float.Apply(anim); break;
+                case NetAnimatorAction.SetFloatDampTime: _floatDampTime.Apply(anim); break;
                 case NetAnimatorAction.SetInt: _int.Apply(anim); break;
                 case NetAnimatorAction.SetTrigger: _trigger.Apply(anim); break;
                 case NetAnimatorAction.SetSpeed: _speed.Apply(anim); break;
