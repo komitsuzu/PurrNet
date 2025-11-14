@@ -8,6 +8,7 @@ namespace PurrNet
     {
         SetBool,
         SetFloat,
+        SetFloatDampTime,
         SetInt,
         SetTrigger,
         SetSpeed,
@@ -185,6 +186,23 @@ namespace PurrNet
         public void Apply(Animator anim)
         {
             anim.SetFloat(nameHash, value);
+        }
+    }
+
+    internal struct SetFloatDampTime : IPackedAuto
+    {
+        public int nameHash;
+        public float value;
+        public float dampTime;
+
+        public void Apply(Animator anim)
+        {
+            anim.SetFloat(nameHash, value, dampTime, Time.deltaTime);
+        }
+
+        public void Apply(Animator anim, float deltaTime)
+        {
+            anim.SetFloat(nameHash, value, dampTime, deltaTime);
         }
     }
 
@@ -562,6 +580,7 @@ namespace PurrNet
 
         internal SetBool _bool;
         internal SetFloat _float;
+        internal SetFloatDampTime _floatDampTime;
         internal SetInt _int;
         internal SetTrigger _trigger;
         private SetSpeed _speed;
@@ -666,6 +685,12 @@ namespace PurrNet
         {
             type = NetAnimatorAction.SetFloat;
             _float = action;
+        }
+
+        public NetAnimatorRPC(SetFloatDampTime action) : this()
+        {
+            type = NetAnimatorAction.SetFloatDampTime;
+            _floatDampTime = action;
         }
 
         public NetAnimatorRPC(SetInt action) : this()
@@ -896,6 +921,7 @@ namespace PurrNet
             {
                 case NetAnimatorAction.SetBool: _bool.Apply(anim); break;
                 case NetAnimatorAction.SetFloat: _float.Apply(anim); break;
+                case NetAnimatorAction.SetFloatDampTime: _float.Apply(anim); break;
                 case NetAnimatorAction.SetInt: _int.Apply(anim); break;
                 case NetAnimatorAction.SetTrigger: _trigger.Apply(anim); break;
                 case NetAnimatorAction.SetSpeed: _speed.Apply(anim); break;
@@ -955,6 +981,7 @@ namespace PurrNet
             {
                 case NetAnimatorAction.SetBool: Packer<SetBool>.Serialize(packer, ref _bool); break;
                 case NetAnimatorAction.SetFloat: Packer<SetFloat>.Serialize(packer, ref _float); break;
+                case NetAnimatorAction.SetFloatDampTime: Packer<SetFloatDampTime>.Serialize(packer, ref _floatDampTime); break;
                 case NetAnimatorAction.SetInt: Packer<SetInt>.Serialize(packer, ref _int); break;
                 case NetAnimatorAction.SetTrigger: Packer<SetTrigger>.Serialize(packer, ref _trigger); break;
                 case NetAnimatorAction.SetSpeed: Packer<SetSpeed>.Serialize(packer, ref _speed); break;
