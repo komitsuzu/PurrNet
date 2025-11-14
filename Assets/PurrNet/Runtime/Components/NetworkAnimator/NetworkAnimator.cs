@@ -490,6 +490,8 @@ namespace PurrNet
 
         public void SetFloat(string propName, float value) => SetFloat(Animator.StringToHash(propName), value);
 
+        public void SetFloat(string propName, float value, float dampTime, float deltaTime) => SetFloat(Animator.StringToHash(propName), value, dampTime, deltaTime);
+
         public float GetFloat(string propName) => _animator.GetFloat(propName);
 
         public float GetFloat(int nameHash) => _animator.GetFloat(nameHash);
@@ -548,17 +550,17 @@ namespace PurrNet
             if (!IsController(_ownerAuth))
                 return;
 
-            var setFloat = new SetFloatDampTime
+            var setFloatDampTime = new SetFloatDampTime
             {
                 nameHash = nameHash,
                 value = value,
                 dampTime = dampTime,
             };
 
-            setFloat.Apply(_animator, deltaTime);
+            setFloatDampTime.Apply(_animator, deltaTime);
             _floatValues[nameHash] = value;
 
-            IfSameReplace(new NetAnimatorRPC(setFloat),
+            IfSameReplace(new NetAnimatorRPC(setFloatDampTime),
                 (a, b) => a._float.nameHash == b._float.nameHash);
         }
 
