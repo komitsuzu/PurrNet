@@ -561,7 +561,7 @@ namespace PurrNet
             _floatValues[nameHash] = value;
 
             IfSameReplace(new NetAnimatorRPC(setFloatDampTime),
-                (a, b) => a._float.nameHash == b._float.nameHash);
+                (a, b) => a._floatDampTime.nameHash == b._floatDampTime.nameHash);
         }
 
         public void SetBool(int nameHash, bool value)
